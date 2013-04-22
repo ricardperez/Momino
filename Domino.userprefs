@@ -1,0 +1,22 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Momino/LevelPropertiesScript.cs">
+    <Files>
+      <File FileName="Assets/Finish/FinishScript.cs" Line="48" Column="4" />
+      <File FileName="Assets/Menu/MenuScript.cs" Line="37" Column="29" />
+      <File FileName="Assets/GameProperties/GameProperties.cs" Line="16" Column="29" />
+      <File FileName="Assets/Momino/LevelPropertiesScript.cs" Line="159" Column="30" />
+      <File FileName="Assets/Momino/ShortestPathScript.cs" Line="31" Column="27" />
+      <File FileName="Assets/Momino/CreateDominos.cs" Line="232" Column="4" />
+      <File FileName="Assets/Momino/MakeStairs.cs" Line="158" Column="1" />
+      <File FileName="Assets/Momino/MominoScript.cs" Line="92" Column="20" />
+      <File FileName="Assets/Momino/Domino.cs" Line="101" Column="118" />
+      <File FileName="Assets/Momino/PowerupScript.cs" Line="93" Column="116" />
+      <File FileName="Assets/WooglieAPI/Plugins/WoogliePiracyProtection.cs" Line="14" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
