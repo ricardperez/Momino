@@ -24,6 +24,7 @@ var rotationDamping = 3.0;
 
 
 function LateUpdate () {
+	
 	// Early out if we don't have a target
 	if (!target || !this.enabled)
 		return;

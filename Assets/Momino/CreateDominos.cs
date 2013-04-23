@@ -121,9 +121,20 @@ public class CreateDominos : MonoBehaviour
 	
 	void godUpdate()
 	{
+		if (GameProperties.editMode != EditMode.kEditModeDominos)
+		{
+			return;
+		}
+		
 		if (Input.GetMouseButton(0) || (Input.GetMouseButtonUp(0)))
 		{
 			Vector3 screenCoordinates = Input.mousePosition;
+			
+			if (this.positionIsOnGUI(screenCoordinates) || LevelPropertiesScript.sharedInstance().positionIsOnGUI(screenCoordinates) || EditModeScript.sharedInstance().positionIsOnGUI(screenCoordinates))
+			{
+				return;
+			}
+			
 			Vector3 position = CreateDominos.worldCoordinatesFromScreenCoordinates(screenCoordinates, this.floor.transform.position);
 			position.y = (this.dominoPrefab.transform.localScale.y * 0.5f);
 					
@@ -233,16 +244,26 @@ public class CreateDominos : MonoBehaviour
 		}
 	}
 	
+	public bool positionIsOnGUI(Vector3 screenPos)
+	{
+		bool found = false;
+		if (GameProperties.gameType == GameType.kGameTypeMomino)
+		{
+			if (LevelPropertiesScript.sharedInstance().nPowerupsGot >= LevelPropertiesScript.sharedInstance().nPowerups)
+			{
+				found = (new Rect((Screen.width - 250), 20, 150, 50)).Contains(screenPos);
+			}
+		}
+		
+		return found;
+	}
+	
 	public static Vector3 worldCoordinatesFromScreenCoordinates(Vector3 screenCoordinates, Vector3 floorPosition)
 	{
 		Ray ray = Camera.main.ScreenPointToRay(screenCoordinates);
 		
 		Vector3 position = new Vector3(0.0f, 0.0f, 0.0f);
-		GameObject collidingStep = null;
-		if (MakeStairs.sharedInstance() != null)
-		{
-			collidingStep = MakeStairs.sharedInstance().rayCastWithStairSteps(ray, out position);
-		}
+		GameObject collidingStep = LevelPropertiesScript.sharedInstance().rayCastWithStairSteps(ray, out position);
 		
 		if (collidingStep == null)
 		{
@@ -296,14 +317,33 @@ public class CreateDominos : MonoBehaviour
 			return null;
 		}
 		
-		GameObject stairsStep = null;
-		if (MakeStairs.sharedInstance() != null)
-		{
-			stairsStep = MakeStairs.sharedInstance().stairsStepAtPosition(position);
-		}
+		GameObject stairsStep = LevelPropertiesScript.sharedInstance().stairsStepAtPosition(position);
 		if (stairsStep != null)
 		{
-			position.y = ((stairsStep.transform.position.y + stairsStep.transform.localScale.y * 0.5f) + this.dominoPrefab.transform.localScale.y * 0.5f);
+			float stepTopPos = (stairsStep.transform.position.y + stairsStep.transform.localScale.y * 0.5f);
+			float floorPos;
+				
+			if (this.mouseLastDomino != null)
+			{
+				floorPos = (this.mouseLastDomino.transform.position.y - this.mouseLastDomino.transform.localScale.y * 0.5f);
+			} else if (MominoScript.sharedInstance() != null)
+			{
+				floorPos = MominoScript.sharedInstance().transform.position.y - MominoScript.sharedInstance().transform.localScale.y * 0.5f;
+			} else
+			{
+				floorPos = (this.floor.transform.position.y + this.dominoPrefab.transform.localScale.y * 0.5f);
+			}
+				
+			float separation = (stepTopPos - floorPos);
+			if (separation > 0.5f)
+			{
+//				position.y = (this.floor.transform.position.y + this.dominoPrefab.transform.localScale.y * 0.5f);
+				position.y = (floorPos + this.dominoPrefab.transform.localScale.y * 0.5f);
+			} else
+			{
+				position.y = ((stairsStep.transform.position.y + stairsStep.transform.localScale.y * 0.5f) + this.dominoPrefab.transform.localScale.y * 0.5f);
+			}
+			
 		} else
 		{
 			position.y = (this.floor.transform.position.y + this.dominoPrefab.transform.localScale.y * 0.5f);

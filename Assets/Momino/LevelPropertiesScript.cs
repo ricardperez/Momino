@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LevelPropertiesScript : MonoBehaviour
 {
 	private static LevelPropertiesScript singleton;
 	public GameObject player;
 	public GameObject floor;
+	public HashSet<GameObject> allSteps;
 	public Camera[] cameras;
 	private int currentIndex;
 	private GUIStyle labelsStyle;
@@ -21,6 +23,7 @@ public class LevelPropertiesScript : MonoBehaviour
 	public bool dominosFalling;
 	public Vector3 dominosFallingPosition;
 	double timeWithoutFalling;
+	private float maxHeight = 100.0f;
 	
 	void Awake()
 	{
@@ -57,6 +60,11 @@ public class LevelPropertiesScript : MonoBehaviour
 		} else
 		{
 			this.maxNDominos = 1000;
+		}
+		
+		if (this.allSteps == null)
+		{
+			this.allSteps = new HashSet<GameObject>();
 		}
 		
 		this.enableFirstCamera();
@@ -111,11 +119,14 @@ public class LevelPropertiesScript : MonoBehaviour
 	void resetPowerups()
 	{
 		this.removeAllPowerups();
-		this.powerups = new ArrayList(this.powerupsPositions.Count);
-		foreach (Vector3 powerupPosition in this.powerupsPositions)
+		if (this.powerupsPositions != null)
 		{
-			GameObject powerup = (GameObject)Instantiate(this.powerupPrefab, powerupPosition, Quaternion.Euler(0, 0, 0));
-			this.powerups.Add(powerup);
+			this.powerups = new ArrayList(this.powerupsPositions.Count);
+			foreach (Vector3 powerupPosition in this.powerupsPositions)
+			{
+				GameObject powerup = (GameObject)Instantiate(this.powerupPrefab, powerupPosition, Quaternion.Euler(0, 0, 0));
+				this.powerups.Add(powerup);
+			}
 		}
 		this.nPowerupsGot = 0;
 		this.nPowerupsExplode = 0;
@@ -123,29 +134,35 @@ public class LevelPropertiesScript : MonoBehaviour
 	
 	void removeAllPowerups()
 	{
-		foreach (GameObject powerup in this.powerups)
+		if (this.powerups != null)
 		{
-			Destroy(powerup);
+			foreach (GameObject powerup in this.powerups)
+			{
+				Destroy(powerup);
+			}
+			this.powerups = null;
 		}
-		this.powerups = null;
 	}
 	
 	// Update is called once per frame
 	void Update()
 	{
-		if (this.dominosFalling)
+		if (GameProperties.gameType == GameType.kGameTypeMomino)
 		{
-			this.timeWithoutFalling += Time.deltaTime;
-			if (this.timeWithoutFalling >= 3.0)
+			if (this.dominosFalling)
 			{
-				if (this.nPowerupsExplode >= this.nPowerups)
+				this.timeWithoutFalling += Time.deltaTime;
+				if (this.timeWithoutFalling >= 3.0)
 				{
-					GameProperties.gameSuccess = true;
-					Application.LoadLevel(2);
-				} else
-				{
-					GameProperties.gameSuccess = false;
-					Application.LoadLevel(2);
+					if (this.nPowerupsExplode >= this.nPowerups)
+					{
+						GameProperties.gameSuccess = true;
+						Application.LoadLevel(2);
+					} else
+					{
+						GameProperties.gameSuccess = false;
+						Application.LoadLevel(2);
+					}
 				}
 			}
 		}
@@ -205,6 +222,7 @@ public class LevelPropertiesScript : MonoBehaviour
 		{
 			CreateDominos.sharedInstance().deleteDominos();
 			this.resetPowerups();
+			EditModeScript.sharedInstance().reset();
 			this.enableFirstCamera();
 			
 			this.floor.transform.localScale = this.defaultFloorSize();
@@ -215,14 +233,41 @@ public class LevelPropertiesScript : MonoBehaviour
 		
 		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Exit"))
 		{
-			if (MakeStairs.sharedInstance() != null)
-			{
-				MakeStairs.sharedInstance().allSteps = null;
-			}
-			
 			GameProperties.paused = false;
 			Application.LoadLevel(0);
 		}
+	}
+	
+	public bool positionIsOnGUI(Vector3 screenPos)
+	{
+		bool found = false;
+		if (GameProperties.paused)
+		{
+			float buttonsHeight = 50.0f;
+			float buttonsSep = 10.0f;
+			
+			int nButtons = 3;
+			float startY = (Screen.height - nButtons * buttonsHeight - (nButtons - 1) * buttonsSep) / 2.0f;
+			float startX = (Screen.width - 150.0f) / 2.0f;
+		
+			float endY = (startY + nButtons * buttonsHeight + (nButtons - 1) * buttonsSep);
+			float endX = startX + 150.0f;
+		
+			if ((screenPos.x >= startX) && (screenPos.x <= endX) && (screenPos.y >= startY) && (screenPos.y <= endY))
+			{
+				int i = 0;
+				float currY = startY;
+				while (!found && i<nButtons)
+				{
+					Rect buttonRect = new Rect(startX, currY, 150.0f, buttonsHeight);
+					found = buttonRect.Contains(screenPos);
+					i++;	
+				}
+			}
+		}
+		
+		return found;
+			
 	}
 	
 	void enableFirstCamera()
@@ -295,5 +340,66 @@ public class LevelPropertiesScript : MonoBehaviour
 	{
 		this.dominosFallingPosition = position;
 		this.timeWithoutFalling = 0.0;
+	}
+	
+	public GameObject stairsStepAtPosition(Vector3 position)
+	{
+//		GameObject collidingStep = null;
+//		foreach (GameObject nextStep in this.allSteps)
+//		{
+//			Vector3 stepPosition = nextStep.transform.position;
+//			Vector3 stepSize = nextStep.transform.localScale;
+//			
+//			if ((position.x > (stepPosition.x - stepSize.x * 0.5f)) && (position.x < (stepPosition.x + stepSize.x * 0.5f)) && (position.z > (stepPosition.z - stepSize.z * 0.5f)) && (position.z < (stepPosition.z + stepSize.z * 0.5f)))
+//			{
+//				collidingStep = nextStep;
+//				break;
+//			}
+//		}
+//		return collidingStep;
+		
+		Vector3 hitPos;
+		Ray ray = new Ray(new Vector3(position.x, -1.0f, position.y), Vector3.up);
+		GameObject step = this.rayCastWithStairSteps(ray, out hitPos);
+		if (step != null)
+		{
+			Debug.Log("Hited a step");
+		}
+		return step;
+	}
+	
+	public GameObject rayCastWithStairSteps(Ray ray, out Vector3 hitPosition)
+	{
+		Debug.Log("raycasting steps");
+		hitPosition = new Vector3(0, 0, 0);
+		GameObject collidingStep = null;
+		
+		RaycastHit hit;
+		if (Physics.Raycast(ray, out hit))
+		{
+			if (hit.collider.gameObject.tag == "StairStep")
+			{
+				collidingStep = hit.collider.gameObject;
+				hitPosition = hit.point;
+			}
+		}
+		return collidingStep;
+	}
+	
+	public void addStep(GameObject step)
+	{
+		if (this.allSteps == null)
+		{
+			this.allSteps = new HashSet<GameObject>();
+		}
+		this.allSteps.Add(step);
+	}
+	
+	public void removeStep(GameObject step)
+	{
+		if (this.allSteps != null)
+		{
+			this.allSteps.Remove(step);
+		}
 	}
 }

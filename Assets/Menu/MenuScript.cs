@@ -33,6 +33,7 @@ public class MenuScript : MonoBehaviour
 		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Play God mode"))
 		{
 			GameProperties.gameType = GameType.kGameTypeGod;
+			GameProperties.editMode = EditMode.kEditModeDominos;
 			GameProperties.paused = false;
 			GameProperties.level = 1;
 			Time.timeScale = 1.0f;
@@ -44,6 +45,7 @@ public class MenuScript : MonoBehaviour
 		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Play with Momino"))
 		{
 			GameProperties.gameType = GameType.kGameTypeMomino;
+			GameProperties.editMode = EditMode.kEditModeDominos;
 			GameProperties.paused = false;
 			GameProperties.level = 1;
 			Time.timeScale = 1.0f;

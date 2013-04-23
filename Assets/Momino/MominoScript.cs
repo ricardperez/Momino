@@ -16,7 +16,7 @@ public class MominoScript : MonoBehaviour
 	public MovementDirection movingDirection = MovementDirection.kMovementStopped;
 	public GameObject floor;
 	private bool shoot = true;
-	
+	public float maxClimbingHeight = 0.5f;
 	
 	void Awake()
 	{
@@ -69,17 +69,23 @@ public class MominoScript : MonoBehaviour
 		this.transform.Translate(0, 0, vertical);
 		
 		Vector3 position = this.transform.position;
-		GameObject collidingStep = null;
-		if (MakeStairs.sharedInstance() != null)
-		{
-			collidingStep = MakeStairs.sharedInstance().stairsStepAtPosition(position);
-		}
+		GameObject collidingStep = LevelPropertiesScript.sharedInstance().stairsStepAtPosition(position);
 		if (collidingStep == null)
 		{
 			position.y = (this.floor.transform.position.y + this.transform.localScale.y * 0.5f);
 		} else
 		{
-			position.y = (this.transform.localScale.y * 0.5f + collidingStep.transform.localScale.y);
+			float stepTopPos = (collidingStep.transform.position.y + collidingStep.transform.localScale.y * 0.5f);
+			float mominoFloorPos = (this.transform.position.y - this.transform.localScale.y * 0.5f);
+			
+			float separation = (stepTopPos - mominoFloorPos);
+			if (separation > this.maxClimbingHeight)
+			{
+				position.y = (this.floor.transform.position.y + this.transform.localScale.y * 0.5f);
+			} else
+			{
+				position.y = (collidingStep.transform.position.y + collidingStep.transform.localScale.y*0.5f + this.transform.localScale.y * 0.5f);
+			}
 		}
 		this.transform.position = position;
 	}
@@ -91,21 +97,21 @@ public class MominoScript : MonoBehaviour
 		
 		float offset = 75;
 		
-		if ((position.x-offset) < ((this.floor.transform.position.x - floorScale.x * 0.5f) * 10.0f))
+		if ((position.x - offset) < ((this.floor.transform.position.x - floorScale.x * 0.5f) * 10.0f))
 		{
-			floorScale.x = (((this.floor.transform.position.x - (position.x-offset)) * 2.0f) / 10.0f) + 1.0f;
+			floorScale.x = (((this.floor.transform.position.x - (position.x - offset)) * 2.0f) / 10.0f) + 1.0f;
 		}
-		if ((position.x+offset) > ((this.floor.transform.position.x + floorScale.x * 0.5f) * 10.0f))
+		if ((position.x + offset) > ((this.floor.transform.position.x + floorScale.x * 0.5f) * 10.0f))
 		{
-			floorScale.x = ((((position.x+offset) - this.floor.transform.position.x) * 2.0f) / 10.0f) + 1.0f;
+			floorScale.x = ((((position.x + offset) - this.floor.transform.position.x) * 2.0f) / 10.0f) + 1.0f;
 		}
-		if ((position.z-offset) < ((this.floor.transform.position.z - floorScale.z * 0.5f) * 10.0f))
+		if ((position.z - offset) < ((this.floor.transform.position.z - floorScale.z * 0.5f) * 10.0f))
 		{
-			floorScale.z = (((this.floor.transform.position.z - (position.z-offset)) * 2.0f) / 10.0f) + 1.0f;
+			floorScale.z = (((this.floor.transform.position.z - (position.z - offset)) * 2.0f) / 10.0f) + 1.0f;
 		}
-		if ((position.z+offset) > ((this.floor.transform.position.z + floorScale.z * 0.5f) * 10.0f))
+		if ((position.z + offset) > ((this.floor.transform.position.z + floorScale.z * 0.5f) * 10.0f))
 		{
-			floorScale.z = ((((position.z+offset) - this.floor.transform.position.z) * 2.0f) / 10.0f) + 1.0f;
+			floorScale.z = ((((position.z + offset) - this.floor.transform.position.z) * 2.0f) / 10.0f) + 1.0f;
 		}
 		this.floor.transform.localScale = floorScale;
 	}
