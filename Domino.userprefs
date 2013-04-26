@@ -1,18 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Momino/LevelPropertiesScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Menu/MenuScript.cs">
     <Files>
-      <File FileName="Assets/Finish/FinishScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Menu/MenuScript.cs" Line="1" Column="1" />
+      <File FileName="Assets/Menu/MenuScript.cs" Line="55" Column="91" />
       <File FileName="Assets/GameProperties/GameProperties.cs" Line="1" Column="1" />
-      <File FileName="Assets/Momino/LevelPropertiesScript.cs" Line="121" Column="103" />
-      <File FileName="Assets/Momino/ShortestPathScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Momino/CreateDominos.cs" Line="1" Column="1" />
-      <File FileName="Assets/Momino/MominoScript.cs" Line="81" Column="3" />
-      <File FileName="Assets/Momino/Domino.cs" Line="1" Column="1" />
-      <File FileName="Assets/Momino/PowerupScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/Momino/templates/MakeStairs.cs" Line="34" Column="6" />
-      <File FileName="Assets/Momino/CameraOrbitScript.cs" Line="39" Column="2" />
+      <File FileName="Assets/Momino/scripts/EditModeScript.cs" Line="96" Column="34" />
+      <File FileName="Assets/Momino/scripts/LevelPropertiesScript.cs" Line="238" Column="3" />
+      <File FileName="Assets/Momino/scripts/GodScript.cs" Line="41" Column="142" />
+      <File FileName="Assets/Momino/scripts/CreateDominos.cs" Line="46" Column="83" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

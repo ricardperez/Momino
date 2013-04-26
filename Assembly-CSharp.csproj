@@ -18,7 +18,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_OSX;ENABLE_MICROPHONE;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PHYSICS;ENABLE_TERRAIN;ENABLE_CACHING;ENABLE_SUBSTANCE;ENABLE_GENERICS;ENABLE_CLOTH;ENABLE_GAMECENTER;ENABLE_MOVIES;ENABLE_AUDIO;ENABLE_WWW;ENABLE_SHADOWS;ENABLE_DUCK_TYPING;UNITY_4_1_2;UNITY_4_1;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_EDITOR</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_OSX;ENABLE_MICROPHONE;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_NETWORK;ENABLE_MONO;ENABLE_PHYSICS;ENABLE_TERRAIN;ENABLE_CACHING;ENABLE_SUBSTANCE;ENABLE_GENERICS;ENABLE_CLOTH;ENABLE_GAMECENTER;ENABLE_MOVIES;ENABLE_AUDIO;ENABLE_WWW;ENABLE_SHADOWS;ENABLE_DUCK_TYPING;UNITY_4_1_2;UNITY_4_1;ENABLE_PROFILER;UNITY_EDITOR</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -47,18 +47,21 @@
      <Compile Include="Assets\Finish\FinishScript.cs" />
      <Compile Include="Assets\GameProperties\GameProperties.cs" />
      <Compile Include="Assets\Menu\MenuScript.cs" />
-     <Compile Include="Assets\Momino\CameraOrbitScript.cs" />
-     <Compile Include="Assets\Momino\CollisionFollowCameraScript.cs" />
-     <Compile Include="Assets\Momino\CollisionParticleSystemScript.cs" />
-     <Compile Include="Assets\Momino\CreateDominos.cs" />
-     <Compile Include="Assets\Momino\DebugScript.cs" />
-     <Compile Include="Assets\Momino\Domino.cs" />
-     <Compile Include="Assets\Momino\LevelPropertiesScript.cs" />
-     <Compile Include="Assets\Momino\MominoScript.cs" />
-     <Compile Include="Assets\Momino\PowerupScript.cs" />
-     <Compile Include="Assets\Momino\ShortestPathScript.cs" />
-     <Compile Include="Assets\Momino\templates\EditModeScript.cs" />
-     <Compile Include="Assets\Momino\templates\MakeStairs.cs" />
+     <Compile Include="Assets\Momino\scripts\CameraOrbitScript.cs" />
+     <Compile Include="Assets\Momino\scripts\CollisionFollowCameraScript.cs" />
+     <Compile Include="Assets\Momino\scripts\CollisionParticleSystemScript.cs" />
+     <Compile Include="Assets\Momino\scripts\CreateDominos.cs" />
+     <Compile Include="Assets\Momino\scripts\DebugScript.cs" />
+     <Compile Include="Assets\Momino\scripts\Domino.cs" />
+     <Compile Include="Assets\Momino\scripts\DominoColliderScript.cs" />
+     <Compile Include="Assets\Momino\scripts\EditModeScript.cs" />
+     <Compile Include="Assets\Momino\scripts\GodScript.cs" />
+     <Compile Include="Assets\Momino\scripts\LevelPropertiesScript.cs" />
+     <Compile Include="Assets\Momino\scripts\MakeDominos.cs" />
+     <Compile Include="Assets\Momino\scripts\MakeStairs.cs" />
+     <Compile Include="Assets\Momino\scripts\MominoScript.cs" />
+     <Compile Include="Assets\Momino\scripts\PowerupScript.cs" />
+     <Compile Include="Assets\Momino\scripts\ShortestPathScript.cs" />
      <Compile Include="Assets\WooglieAPI\Plugins\WoogliePiracyProtection.cs" />
      <None Include="Assets\WooglieAPI\Settings\settings.txt" />
      <None Include="Assets\WooglieAPI\README.txt" />
