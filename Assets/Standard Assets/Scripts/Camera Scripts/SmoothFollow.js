@@ -24,9 +24,8 @@ var rotationDamping = 3.0;
 
 
 function LateUpdate () {
-	
 	// Early out if we don't have a target
-	if (!target || !this.enabled)
+	if (!target)
 		return;
 	
 	// Calculate the current rotation angles
@@ -56,6 +55,7 @@ function LateUpdate () {
 	// Always look at the target
 	transform.LookAt (target);
 }
+
 
 
 function Update ()

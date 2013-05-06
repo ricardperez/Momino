@@ -62,13 +62,8 @@
      <Compile Include="Assets\Momino\scripts\MominoScript.cs" />
      <Compile Include="Assets\Momino\scripts\PowerupScript.cs" />
      <Compile Include="Assets\Momino\scripts\ShortestPathScript.cs" />
-     <Compile Include="Assets\WooglieAPI\Plugins\WoogliePiracyProtection.cs" />
-     <None Include="Assets\WooglieAPI\Settings\settings.txt" />
-     <None Include="Assets\WooglieAPI\README.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{C5916664-19D2-F620-80D8-2A4E269E8B15}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
       <Project>{011BF230-7CEA-550C-8ECA-F3AA419E2CEB}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>

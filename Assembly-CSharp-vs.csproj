@@ -62,16 +62,9 @@
      <Compile Include="Assets\Momino\scripts\MominoScript.cs" />
      <Compile Include="Assets\Momino\scripts\PowerupScript.cs" />
      <Compile Include="Assets\Momino\scripts\ShortestPathScript.cs" />
-     <Compile Include="Assets\WooglieAPI\Plugins\WoogliePiracyProtection.cs" />
-     <None Include="Assets\WooglieAPI\Settings\settings.txt" />
-     <None Include="Assets\WooglieAPI\README.txt" />
  <Reference Include="Library\ScriptAssemblies\Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
-      <Project>{C5916664-19D2-F620-80D8-2A4E269E8B15}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
