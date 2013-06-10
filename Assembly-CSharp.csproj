@@ -47,7 +47,10 @@
      <Compile Include="Assets\Finish\FinishScript.cs" />
      <Compile Include="Assets\GameProperties\GameProperties.cs" />
      <Compile Include="Assets\Menu\MenuScript.cs" />
+     <Compile Include="Assets\Momino\scripts\BackgroundMusic.cs" />
      <Compile Include="Assets\Momino\scripts\CameraOrbitScript.cs" />
+     <Compile Include="Assets\Momino\scripts\Circle.cs" />
+     <Compile Include="Assets\Momino\scripts\ClickSoundGC.cs" />
      <Compile Include="Assets\Momino\scripts\CollisionFollowCameraScript.cs" />
      <Compile Include="Assets\Momino\scripts\CollisionParticleSystemScript.cs" />
      <Compile Include="Assets\Momino\scripts\CreateDominos.cs" />

@@ -67,6 +67,8 @@ public class ShortestPathScript : MonoBehaviour
 		float floorYPos = floor.transform.position.y + floor.transform.localScale.y * 0.5f + +0.001f;
 		if (this.checkpoints.Count > 0)
 		{
+			GameObject circleGO;
+			Circle circle;
 			Vector3 prevPos = (Vector3)this.checkpoints[0];
 			for (int i=1; i<this.checkpoints.Count; i++)
 			{
@@ -76,8 +78,19 @@ public class ShortestPathScript : MonoBehaviour
 				Quaternion rotation = Quaternion.Euler(0.0f, lookRotation.eulerAngles.y, 0.0f);
 				GameObject pathPlane = ((Transform)Instantiate(this.pathPrefab, pos, rotation)).gameObject;
 				pathPlane.transform.localScale = new Vector3(0.1f, 1.0f, (Vector3.Distance(nextPos, prevPos) / 10.0f));
+				
+				circleGO = new GameObject();
+				circle = circleGO.AddComponent<Circle>();
+				circle.SetRadius(0.5f);
+				circleGO.transform.position = new Vector3(prevPos.x, 0.001f, prevPos.z);
+				
 				prevPos = nextPos;
 			}
+			
+			circleGO = new GameObject();
+			circle = circleGO.AddComponent<Circle>();
+			circle.SetRadius(0.5f);
+			circleGO.transform.position = new Vector3(prevPos.x, 0.001f, prevPos.z);
 		}
 		
 	}

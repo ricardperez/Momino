@@ -3,8 +3,8 @@ using System.Collections;
 
 public class EditModeScript : MonoBehaviour
 {
-
 	public GameObject[] prefabs;
+	public Transform mouseClick;
 	private static EditModeScript singleton;
 	private float buttonsHeight = 25.0f;
 	private float buttonsWidth = 100.0f;
@@ -101,12 +101,18 @@ public class EditModeScript : MonoBehaviour
 			}
 		}
 		
-		if (Input.GetButtonDown("ChangeCamera"))
+		if (GameProperties.gameType != GameType.kGameTypeMominoTargets)
 		{
-			LevelPropertiesScript.sharedInstance().changeCamera();
+			if (Input.GetButtonDown("ChangeCamera"))
+			{
+				Instantiate(this.mouseClick);
+				LevelPropertiesScript.sharedInstance().changeCamera();
+			}
 		}
+		
 		if (Input.GetButtonDown("ChangeColor"))
 		{
+			Instantiate(this.mouseClick);
 			LevelPropertiesScript.sharedInstance().changeCurrentColor();
 		}
 		
@@ -115,48 +121,75 @@ public class EditModeScript : MonoBehaviour
 	void OnGUI()
 	{
 		int nButtons = this.prefabs.Length;
-		
 		float currY = (Screen.height - nButtons * this.buttonsHeight - (nButtons - 1) * this.buttonsSep) / 2;
 		float startX = (Screen.width - this.buttonsWidth - this.buttonsRightOffset);
-		for (int i=0; i<nButtons; i++)
+		if (GameProperties.gameType != GameType.kGameTypeMominoTargets)
 		{
-			if (GUI.Button(new Rect(startX, currY, this.buttonsWidth, this.buttonsHeight), this.prefabs[i].name))
+		
+			for (int i=0; i<nButtons; i++)
 			{
-				LevelPropertiesScript.sharedInstance().setWasPaused();
-				GameProperties.editMode = EditMode.kEditModePrefabs;
-				this.editingPrefab = (GameObject)Instantiate(this.prefabs[i], new Vector3(0, 0, 0), Quaternion.identity);
-				
-				if (this.editingPrefab.tag == "DominosCollection")
+				if (GUI.Button(new Rect(startX, currY, this.buttonsWidth, this.buttonsHeight), this.prefabs[i].name))
 				{
-					MakeDominos makeDominos = this.editingPrefab.GetComponent<MakeDominos>();
-					makeDominos.applyCurrentColor();
-				}
+					Instantiate(this.mouseClick);
+					LevelPropertiesScript.sharedInstance().setWasPaused();
+					GameProperties.editMode = EditMode.kEditModePrefabs;
+					this.editingPrefab = (GameObject)Instantiate(this.prefabs[i], new Vector3(0, 0, 0), Quaternion.identity);
 				
-				this.rotationX = 0.0f;
-				this.instances.Add(this.editingPrefab);
+					if (this.editingPrefab.tag == "DominosCollection")
+					{
+						MakeDominos makeDominos = this.editingPrefab.GetComponent<MakeDominos>();
+						makeDominos.applyCurrentColor();
+					}
+					
+					this.rotationX = 0.0f;
+					this.instances.Add(this.editingPrefab);
+				}
+				currY += (this.buttonsSep + this.buttonsHeight);
 			}
-			currY += (this.buttonsSep + this.buttonsHeight);
-		}
-		
-		if (GUI.Button(new Rect(startX, 15.0f, this.buttonsWidth, this.buttonsHeight), ("Color (x): " + LevelPropertiesScript.sharedInstance().currentColorName())))
-		{
-			LevelPropertiesScript.sharedInstance().setWasPaused();
-			LevelPropertiesScript.sharedInstance().changeCurrentColor();
-		}
-		
-		if (GameProperties.gameType != GameType.kGameTypeGod)
-		{
-			bool shoot = MominoScript.sharedInstance().shoot;
-			if (GUI.Button(new Rect(startX - this.buttonsWidth - this.buttonsRightOffset, 15.0f, this.buttonsWidth, this.buttonsHeight), (shoot ? "Stop (q)" : "Continue (q)")))
+			
+			
+			if (GUI.Button(new Rect(startX, 15.0f, this.buttonsWidth, this.buttonsHeight), ("Color (x): " + LevelPropertiesScript.sharedInstance().currentColorName())))
 			{
-				MominoScript.sharedInstance().shoot = !shoot;
+				Instantiate(this.mouseClick);
+				LevelPropertiesScript.sharedInstance().setWasPaused();
+				LevelPropertiesScript.sharedInstance().changeCurrentColor();
 			}
-		}
 		
-		if (GUI.Button(new Rect(startX - (this.buttonsWidth + this.buttonsRightOffset) * 2, 15.0f, this.buttonsWidth, this.buttonsHeight), "Camera (c)"))
+			if (GameProperties.gameType != GameType.kGameTypeGod)
+			{
+				bool shoot = MominoScript.sharedInstance().shoot;
+				if (GUI.Button(new Rect(startX - this.buttonsWidth - this.buttonsRightOffset, 15.0f, this.buttonsWidth, this.buttonsHeight), (shoot ? "Stop (q)" : "Continue (q)")))
+				{
+					Instantiate(this.mouseClick);
+					MominoScript.sharedInstance().shoot = !shoot;
+				}
+			}
+		
+			if (GUI.Button(new Rect(startX - (this.buttonsWidth + this.buttonsRightOffset) * 2, 15.0f, this.buttonsWidth, this.buttonsHeight), "Camera (c)"))
+			{
+				Instantiate(this.mouseClick);
+				LevelPropertiesScript.sharedInstance().setWasPaused();
+				LevelPropertiesScript.sharedInstance().changeCamera();
+			}
+			
+		} else
 		{
-			LevelPropertiesScript.sharedInstance().setWasPaused();
-			LevelPropertiesScript.sharedInstance().changeCamera();
+			if (GUI.Button(new Rect(startX, 15.0f, this.buttonsWidth, this.buttonsHeight), ("Color (x): " + LevelPropertiesScript.sharedInstance().currentColorName())))
+			{
+				Instantiate(this.mouseClick);
+				LevelPropertiesScript.sharedInstance().setWasPaused();
+				LevelPropertiesScript.sharedInstance().changeCurrentColor();
+			}
+		
+			if (GameProperties.gameType != GameType.kGameTypeGod)
+			{
+				bool shoot = MominoScript.sharedInstance().shoot;
+				if (GUI.Button(new Rect(startX - this.buttonsWidth - this.buttonsRightOffset, 15.0f, this.buttonsWidth, this.buttonsHeight), (shoot ? "Stop (q)" : "Continue (q)")))
+				{
+					Instantiate(this.mouseClick);
+					MominoScript.sharedInstance().shoot = !shoot;
+				}
+			}
 		}
 		
 		
@@ -172,14 +205,20 @@ public class EditModeScript : MonoBehaviour
 	
 	private bool positionIsOnPrefabsGUI(Vector3 screenPos)
 	{
-		int nButtons = this.prefabs.Length;
-		float startY = (Screen.height - nButtons * this.buttonsHeight - (nButtons - 1) * this.buttonsSep) / 2;
-		float startX = (Screen.width - this.buttonsWidth - this.buttonsRightOffset);
+		if (GameProperties.gameType != GameType.kGameTypeMominoTargets)
+		{
+			int nButtons = this.prefabs.Length;
+			float startY = (Screen.height - nButtons * this.buttonsHeight - (nButtons - 1) * this.buttonsSep) / 2;
+			float startX = (Screen.width - this.buttonsWidth - this.buttonsRightOffset);
 		
-		float endY = (startY + nButtons * this.buttonsHeight + (nButtons - 1) * this.buttonsSep);
-		float endX = (Screen.width - this.buttonsRightOffset);
+			float endY = (startY + nButtons * this.buttonsHeight + (nButtons - 1) * this.buttonsSep);
+			float endX = (Screen.width - this.buttonsRightOffset);
 		
-		return ((screenPos.x >= startX) && (screenPos.x <= endX) && (screenPos.y >= startY) && (screenPos.y <= endY));
+			return ((screenPos.x >= startX) && (screenPos.x <= endX) && (screenPos.y >= startY) && (screenPos.y <= endY));
+		} else
+		{
+			return false;
+		}
 	}
 	
 	public Vector3 worldCoordinatesFromScreenCoordinates(Vector3 screenCoordinates, Vector3 floorPosition)

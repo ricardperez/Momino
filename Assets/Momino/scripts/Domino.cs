@@ -64,7 +64,7 @@ public class Domino : MonoBehaviour
 					otherDomino.hasCollided = true;
 					LevelPropertiesScript.sharedInstance().nDominosCombo += 1;
 					
-					audio.clip = audioFile;
+					audio.clip = this.audioFile;
 					float volume = Mathf.InverseLerp(thresholdVelocity, thresholdVelocity * 4, collisionMagnitude);
 					audio.volume = volume;
 					audio.Play();

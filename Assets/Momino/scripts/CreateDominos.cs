@@ -85,6 +85,9 @@ public class CreateDominos : MonoBehaviour
 			}
 			LevelPropertiesScript.sharedInstance().dominosFalling = false;
 		}
+		
+		BackgroundMusic bm = this.GetComponent<BackgroundMusic>();
+		bm.playGameMusic();
 	}
 	
 	void pushDominos()
@@ -102,6 +105,9 @@ public class CreateDominos : MonoBehaviour
 			firstDomino.rigidbody.AddForce(firstDomino.transform.forward * 100);
 			LevelPropertiesScript.sharedInstance().dominosFalling = true;
 		}
+		
+		BackgroundMusic bm = this.GetComponent<BackgroundMusic>();
+		bm.playGameFastMusic();
 	}
 	
 	void OnGUI()

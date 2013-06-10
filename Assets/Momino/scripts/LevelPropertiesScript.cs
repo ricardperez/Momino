@@ -23,6 +23,7 @@ enum DominoColor
 public class LevelPropertiesScript : MonoBehaviour
 {
 	private static LevelPropertiesScript singleton;
+	public Transform mouseClick;
 	public GameObject floor;
 	public HashSet<GameObject> allSteps;
 	public Camera[] cameras;
@@ -45,6 +46,7 @@ public class LevelPropertiesScript : MonoBehaviour
 	
 	private bool _wasPaused;
 	private double timeSincePaused;
+	private float _audioTime;
 	
 	void Awake()
 	{
@@ -205,7 +207,6 @@ public class LevelPropertiesScript : MonoBehaviour
 			this.timeSincePaused += Time.deltaTime;
 			if (this.timeSincePaused > 0.25)
 			{
-				Debug.Log("changing paused");
 				this._wasPaused = false;
 			}
 		}
@@ -251,12 +252,20 @@ public class LevelPropertiesScript : MonoBehaviour
 		float currY = (Screen.height - nButtons * buttonsHeight - (nButtons - 1) * buttonsSep) / 2;
 		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Resume"))
 		{
+			if (this.mouseClick != null)
+			{
+				Instantiate(this.mouseClick);
+			} else
+			{
+				Debug.Log("Mouseclick is null?");
+			}
 			this.resume();
 		}
 		currY += (buttonsSep + buttonsHeight);
 		
 		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Reset"))
 		{
+			Instantiate(this.mouseClick);
 			CreateDominos.sharedInstance().reset();
 			EditModeScript.sharedInstance().reset();
 			if (MominoScript.sharedInstance() != null)
@@ -278,6 +287,11 @@ public class LevelPropertiesScript : MonoBehaviour
 		
 		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Exit"))
 		{
+			if (this.mouseClick != null)
+			{
+				Instantiate(this.mouseClick);
+			}
+			
 			this.resume();
 			Application.LoadLevel(0);
 		}
@@ -540,6 +554,9 @@ public class LevelPropertiesScript : MonoBehaviour
 		AudioListener.pause = true;
 		Time.timeScale = 0.000001f;
 		
+		this._audioTime = this.audio.time;
+		this.audio.Pause();
+		
 		this.setWasPaused();
 	}
 	
@@ -549,6 +566,9 @@ public class LevelPropertiesScript : MonoBehaviour
 		AudioListener.pause = false;
 		Time.timeScale = 1.0f;
 		this.timeSincePaused = 0.0;
+		
+		this.audio.Play();
+		this.audio.time = this._audioTime;
 	}
 	
 	public bool wasPaused()
