@@ -64,7 +64,7 @@ public class ShortestPathScript : MonoBehaviour
 	public void instantiatePath()
 	{
 		GameObject floor = LevelPropertiesScript.sharedInstance().floor;
-		float floorYPos = floor.transform.position.y + floor.transform.localScale.y * 0.5f + +0.001f;
+		float floorYPos = floor.transform.position.y + floor.transform.localScale.y * 0.5f + +0.01f;
 		if (this.checkpoints.Count > 0)
 		{
 			GameObject circleGO;
@@ -82,7 +82,7 @@ public class ShortestPathScript : MonoBehaviour
 				circleGO = new GameObject();
 				circle = circleGO.AddComponent<Circle>();
 				circle.SetRadius(0.5f);
-				circleGO.transform.position = new Vector3(prevPos.x, 0.001f, prevPos.z);
+				circleGO.transform.position = new Vector3(prevPos.x, floorYPos, prevPos.z);
 				
 				prevPos = nextPos;
 			}

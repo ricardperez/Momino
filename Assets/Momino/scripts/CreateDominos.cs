@@ -12,6 +12,7 @@ public class CreateDominos : MonoBehaviour
 	public GameObject lastDomino;
 	public bool dominosRunning = false;
 	private ArrayList allDominos;
+	private GUIStyle buttonsStyle;
 	
 	void Awake()
 	{
@@ -112,37 +113,60 @@ public class CreateDominos : MonoBehaviour
 	
 	void OnGUI()
 	{
-		if (GameProperties.gameType == GameType.kGameTypeMominoTargets)
+		if (this.buttonsStyle == null)
 		{
-			if (!LevelPropertiesScript.sharedInstance().dominosFalling && (LevelPropertiesScript.sharedInstance().nPowerupsGot >= LevelPropertiesScript.sharedInstance().nPowerups))
+			this.buttonsStyle = new GUIStyle(GUI.skin.button);
+			if (GameProperties.IsTactil())
 			{
-				if (GUI.Button(new Rect((Screen.width - 250), 50, 150, 50), "Action"))
-				{
-					LevelPropertiesScript.sharedInstance().nDominosCombo = 0;
-					if (this.dominosRunning)
-					{
-						this.resetDominosPositions();
-						LevelPropertiesScript.sharedInstance().setMainCamera();
-					} else
-					{
-						this.pushDominos();
-						LevelPropertiesScript.sharedInstance().setFollowCamera();
-					}
-					this.dominosRunning = !this.dominosRunning;
-				}
+				this.buttonsStyle.fontSize = 18;
 			}
 		}
+		
+		if (GameProperties.IsTactil())
+		{
+			if ((this.allDominos.Count > 0) &&  (GUI.Button(new Rect((Screen.width - 260), (Screen.height - 150), 130, 75), "Action", this.buttonsStyle)))
+			{
+				LevelPropertiesScript.sharedInstance().nDominosCombo = 0;
+				if (this.dominosRunning)
+				{
+					this.resetDominosPositions();
+					LevelPropertiesScript.sharedInstance().setMainCamera();
+				} else
+				{
+					this.pushDominos();
+					LevelPropertiesScript.sharedInstance().setFollowCamera();
+				}
+				this.dominosRunning = !this.dominosRunning;
+			}
+		} else if (!LevelPropertiesScript.sharedInstance().dominosFalling && (LevelPropertiesScript.sharedInstance().nPowerupsGot >= LevelPropertiesScript.sharedInstance().nPowerups))
+		{
+			if (GUI.Button(new Rect((Screen.width - 250), 50, 150, 50), "Action"))
+			{
+				LevelPropertiesScript.sharedInstance().nDominosCombo = 0;
+				if (this.dominosRunning)
+				{
+					this.resetDominosPositions();
+					LevelPropertiesScript.sharedInstance().setMainCamera();
+				} else
+				{
+					this.pushDominos();
+					LevelPropertiesScript.sharedInstance().setFollowCamera();
+				}
+				this.dominosRunning = !this.dominosRunning;
+			}
+		}
+		
 	}
 	
 	public bool positionIsOnGUI(Vector3 screenPos)
 	{
 		bool found = false;
-		if (GameProperties.gameType == GameType.kGameTypeMominoTargets)
+		if (GameProperties.IsTactil())
 		{
-			if (LevelPropertiesScript.sharedInstance().nPowerupsGot >= LevelPropertiesScript.sharedInstance().nPowerups)
-			{
-				found = (new Rect((Screen.width - 250), 50, 150, 50)).Contains(screenPos);
-			}
+			found = (new Rect((Screen.width - 260), (Screen.height - 150), 130, 75)).Contains(screenPos);
+		} else if (LevelPropertiesScript.sharedInstance().nPowerupsGot >= LevelPropertiesScript.sharedInstance().nPowerups)
+		{
+			found = (new Rect((Screen.width - 250), 50, 150, 50)).Contains(screenPos);
 		}
 		
 		return found;

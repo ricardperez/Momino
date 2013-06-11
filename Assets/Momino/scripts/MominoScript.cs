@@ -20,6 +20,9 @@ public class MominoScript : MonoBehaviour
 	private HashSet<GameObject> allCollidedFloors;
 	private GameObject currFloor;
 	
+	public Transform joystick;
+	private Joystick moveJoystick;
+	
 	void Awake()
 	{
 		MominoScript.singleton = this;
@@ -40,6 +43,14 @@ public class MominoScript : MonoBehaviour
 	{
 		this.currFloor = LevelPropertiesScript.sharedInstance().floor;
 		this.allCollidedFloors = new HashSet<GameObject>();
+		
+		if (GameProperties.IsTactil())
+		{
+			this.moveJoystick = this.joystick.GetComponent<Joystick>();
+		} else
+		{
+			Destroy(this.joystick.gameObject);
+		}
 	}
 	
 	// Update is called once per frame
@@ -52,8 +63,19 @@ public class MominoScript : MonoBehaviour
 	
 	void updatePosition()
 	{
-		float axisHorizontal = Input.GetAxis("Horizontal");
-		float axisVertical = Input.GetAxis("Vertical");
+		
+		float axisHorizontal;
+		float axisVertical;
+		if (GameProperties.IsTactil())
+		{
+			Vector2 joystickInput = this.moveJoystick.position;
+			axisHorizontal = (Mathf.Abs(joystickInput.x) > 0.3f ? joystickInput.x*0.9f : 0.0f);
+			axisVertical = (Mathf.Abs(joystickInput.y) > 0.3f ? joystickInput.y*0.65f : 0.0f);
+		} else
+		{
+			axisHorizontal = Input.GetAxis("Horizontal");
+			axisVertical = Input.GetAxis("Vertical");
+		}
 		
 		if (axisVertical > 0.001f && Time.deltaTime > 0.0f)
 		{

@@ -125,7 +125,6 @@ public class EditModeScript : MonoBehaviour
 		float startX = (Screen.width - this.buttonsWidth - this.buttonsRightOffset);
 		if (GameProperties.gameType != GameType.kGameTypeMominoTargets)
 		{
-		
 			for (int i=0; i<nButtons; i++)
 			{
 				if (GUI.Button(new Rect(startX, currY, this.buttonsWidth, this.buttonsHeight), this.prefabs[i].name))
@@ -174,20 +173,23 @@ public class EditModeScript : MonoBehaviour
 			
 		} else
 		{
-			if (GUI.Button(new Rect(startX, 15.0f, this.buttonsWidth, this.buttonsHeight), ("Color (x): " + LevelPropertiesScript.sharedInstance().currentColorName())))
+			if (!GameProperties.IsTactil())
 			{
-				Instantiate(this.mouseClick);
-				LevelPropertiesScript.sharedInstance().setWasPaused();
-				LevelPropertiesScript.sharedInstance().changeCurrentColor();
-			}
-		
-			if (GameProperties.gameType != GameType.kGameTypeGod)
-			{
-				bool shoot = MominoScript.sharedInstance().shoot;
-				if (GUI.Button(new Rect(startX - this.buttonsWidth - this.buttonsRightOffset, 15.0f, this.buttonsWidth, this.buttonsHeight), (shoot ? "Stop (q)" : "Continue (q)")))
+				if (GUI.Button(new Rect(startX, 15.0f, this.buttonsWidth, this.buttonsHeight), ("Color (x): " + LevelPropertiesScript.sharedInstance().currentColorName())))
 				{
 					Instantiate(this.mouseClick);
-					MominoScript.sharedInstance().shoot = !shoot;
+					LevelPropertiesScript.sharedInstance().setWasPaused();
+					LevelPropertiesScript.sharedInstance().changeCurrentColor();
+				}
+		
+				if (GameProperties.gameType != GameType.kGameTypeGod)
+				{
+					bool shoot = MominoScript.sharedInstance().shoot;
+					if (GUI.Button(new Rect(startX - this.buttonsWidth - this.buttonsRightOffset, 15.0f, this.buttonsWidth, this.buttonsHeight), (shoot ? "Stop (q)" : "Continue (q)")))
+					{
+						Instantiate(this.mouseClick);
+						MominoScript.sharedInstance().shoot = !shoot;
+					}
 				}
 			}
 		}

@@ -43,7 +43,7 @@ public class LevelPropertiesScript : MonoBehaviour
 	double timeWithoutFalling;
 	private DominoColor dominoColor = DominoColor.kColorRandom;
 	private System.Random rnd;
-	
+	private GUIStyle buttonsStyle;
 	private bool _wasPaused;
 	private double timeSincePaused;
 	private float _audioTime;
@@ -73,6 +73,10 @@ public class LevelPropertiesScript : MonoBehaviour
 	{
 		this.labelsStyle = new GUIStyle();
 		labelsStyle.normal.textColor = Color.black;
+		if (GameProperties.IsTactil())
+		{
+			labelsStyle.fontSize = 15;
+		}
 		
 		switch (GameProperties.gameType)
 		{
@@ -223,6 +227,15 @@ public class LevelPropertiesScript : MonoBehaviour
 	
 	void OnGUI()
 	{
+		if (this.buttonsStyle == null)
+		{
+			this.buttonsStyle = new GUIStyle(GUI.skin.button);
+			if (GameProperties.IsTactil())
+			{
+				this.buttonsStyle.fontSize = 16;
+			}
+		}
+		
 		if (GameProperties.gameType == GameType.kGameTypeMominoTargets)
 		{
 			GUI.Label(new Rect(10, 10, 300, 50), "Dominos: " + this.nDominos + "/" + this.maxNDominos, this.labelsStyle);
@@ -240,30 +253,32 @@ public class LevelPropertiesScript : MonoBehaviour
 		if (GameProperties.paused)
 		{
 			this.displayPauseMenu();
+		} else if (GameProperties.IsTactil())
+		{
+			if (GUI.Button(new Rect((Screen.width - 100.0f), 15.0f, 80.0f, 40.0f), "Menu", this.buttonsStyle))
+			{
+				Instantiate(this.mouseClick);
+				this.pause();
+			}
 		}
 	}
 	
 	void displayPauseMenu()
 	{
-		float buttonsHeight = 50.0f;
-		float buttonsSep = 10.0f;
+		float buttonsHeight = (GameProperties.IsTactil() ? 80.0f : 50.0f);
+		float buttonsSep = (GameProperties.IsTactil() ? 20.0f : 10.0f);
+		float buttonsWidth = (GameProperties.IsTactil() ? 180.0f : 150.0f);
 		int nButtons = 3;
 		
 		float currY = (Screen.height - nButtons * buttonsHeight - (nButtons - 1) * buttonsSep) / 2;
-		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Resume"))
+		if (GUI.Button(new Rect((Screen.width - buttonsWidth) / 2, currY, buttonsWidth, buttonsHeight), "Resume", this.buttonsStyle))
 		{
-			if (this.mouseClick != null)
-			{
-				Instantiate(this.mouseClick);
-			} else
-			{
-				Debug.Log("Mouseclick is null?");
-			}
+			Instantiate(this.mouseClick);
 			this.resume();
 		}
 		currY += (buttonsSep + buttonsHeight);
 		
-		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Reset"))
+		if (GUI.Button(new Rect((Screen.width - buttonsWidth) / 2, currY, buttonsWidth, buttonsHeight), "Reset", this.buttonsStyle))
 		{
 			Instantiate(this.mouseClick);
 			CreateDominos.sharedInstance().reset();
@@ -285,13 +300,9 @@ public class LevelPropertiesScript : MonoBehaviour
 		}
 		currY += (buttonsSep + buttonsHeight);
 		
-		if (GUI.Button(new Rect((Screen.width - 150) / 2, currY, 150, buttonsHeight), "Exit"))
+		if (GUI.Button(new Rect((Screen.width - buttonsWidth) / 2, currY, buttonsWidth, buttonsHeight), "Exit", this.buttonsStyle))
 		{
-			if (this.mouseClick != null)
-			{
-				Instantiate(this.mouseClick);
-			}
-			
+			Instantiate(this.mouseClick);
 			this.resume();
 			Application.LoadLevel(0);
 		}
@@ -302,15 +313,16 @@ public class LevelPropertiesScript : MonoBehaviour
 		bool found = false;
 		if (GameProperties.paused)
 		{
-			float buttonsHeight = 50.0f;
-			float buttonsSep = 10.0f;
+			float buttonsHeight = (GameProperties.IsTactil() ? 80.0f : 50.0f);
+			float buttonsSep = (GameProperties.IsTactil() ? 20.0f : 10.0f);
+			float buttonsWidth = (GameProperties.IsTactil() ? 180.0f : 150.0f);
 			
 			int nButtons = 3;
 			float startY = (Screen.height - nButtons * buttonsHeight - (nButtons - 1) * buttonsSep) / 2.0f;
-			float startX = (Screen.width - 150.0f) / 2.0f;
+			float startX = (Screen.width - buttonsWidth) / 2.0f;
 		
 			float endY = (startY + nButtons * buttonsHeight + (nButtons - 1) * buttonsSep);
-			float endX = startX + 150.0f;
+			float endX = startX + buttonsWidth;
 		
 			if ((screenPos.x >= startX) && (screenPos.x <= endX) && (screenPos.y >= startY) && (screenPos.y <= endY))
 			{
@@ -318,7 +330,7 @@ public class LevelPropertiesScript : MonoBehaviour
 				float currY = startY;
 				while (!found && i<nButtons)
 				{
-					Rect buttonRect = new Rect(startX, currY, 150.0f, buttonsHeight);
+					Rect buttonRect = new Rect(startX, currY, buttonsWidth, buttonsHeight);
 					found = buttonRect.Contains(screenPos);
 					i++;	
 				}
