@@ -25,8 +25,8 @@ public class GameProperties : MonoBehaviour
 	public static EditMode editMode = EditMode.kEditModeDominos;
 	public static bool IsTactil()
 	{
-		return true;
-//		return (Application.platform == RuntimePlatform.IPhonePlayer);
+//		return true;
+		return (Application.platform == RuntimePlatform.IPhonePlayer);
 	}
 	
 }
