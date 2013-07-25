@@ -7,6 +7,7 @@ public class MenuScript : MonoBehaviour
 	private GUIStyle labelsStyle;
 	private GUIStyle buttonsStyle;
 	public AudioClip buttonsClick;
+	public GUITexture backgroundTexture;
 
 	// Use this for initialization
 	void Start()
@@ -25,6 +26,15 @@ public class MenuScript : MonoBehaviour
 		this.titleLabelsStyle.fontSize = 35;
 		
 		this.buttonsStyle = null;
+		
+		Debug.Log("Screen size: " + "(" + Screen.width + ", " + Screen.height + ")");
+//		Debug.Log("Initial pixel inset: " + this.backgroundTexture.pixelInset);
+		float width = Screen.width * 0.66f;
+		float height = (this.backgroundTexture.pixelInset.height * (width / this.backgroundTexture.pixelInset.width));
+		float originX = (Screen.width - width)*0.5f - Screen.width*0.5f;
+		float originY = (Screen.height - height)*0.5f - Screen.height*0.5f;
+		this.backgroundTexture.pixelInset = new UnityEngine.Rect(originX, originY, width, height);
+		Debug.Log("Width: " + width + " - Height: " + height + "  -  inset: " + this.backgroundTexture.pixelInset);
 	}
 	
 	// Update is called once per frame
@@ -67,7 +77,8 @@ public class MenuScript : MonoBehaviour
 		if (GUI.Button(new Rect((Screen.width - buttonsWidth) / 2, currY, buttonsWidth, buttonsHeight), firstTitle, this.buttonsStyle))
 		{
 			this.audio.clip = this.buttonsClick;
-			audio.Play();
+			this.audio.loop = false;
+			this.audio.Play();
 			GameProperties.gameType = GameType.kGameTypeMominoTargets;
 			GameProperties.editMode = EditMode.kEditModeDominos;
 			GameProperties.paused = false;
@@ -83,7 +94,8 @@ public class MenuScript : MonoBehaviour
 			if (GUI.Button(new Rect((Screen.width - buttonsWidth) / 2, currY, buttonsWidth, buttonsHeight), "Momino", this.buttonsStyle))
 			{
 				this.audio.clip = this.buttonsClick;
-				audio.Play();
+				this.audio.loop = false;
+				this.audio.Play();
 				GameProperties.gameType = GameType.kGameTypeMomino;
 				GameProperties.editMode = EditMode.kEditModeDominos;
 				GameProperties.paused = false;
@@ -97,7 +109,8 @@ public class MenuScript : MonoBehaviour
 			if (GUI.Button(new Rect((Screen.width - buttonsWidth) / 2, currY, buttonsWidth, buttonsHeight), "God", this.buttonsStyle))
 			{
 				this.audio.clip = this.buttonsClick;
-				audio.Play();
+				this.audio.loop = false;
+				this.audio.Play();
 				GameProperties.gameType = GameType.kGameTypeGod;
 				GameProperties.editMode = EditMode.kEditModeDominos;
 				GameProperties.paused = false;
@@ -116,7 +129,8 @@ public class MenuScript : MonoBehaviour
 			}
 		}
 		
-		GUI.Label(new Rect(((Screen.width - 300) / 2), Screen.height - 100, 300, 30), "Developer: Ricard Perez", this.labelsStyle);
-		GUI.Label(new Rect(((Screen.width - 300) / 2), Screen.height - 80, 300, 30), "Sound director: Pau Bukowski", this.labelsStyle);
+		GUI.Label(new Rect(((Screen.width - 300) / 2), Screen.height - 110, 300, 30), "Developer: Ricard Perez", this.labelsStyle);
+		GUI.Label(new Rect(((Screen.width - 300) / 2), Screen.height - 90, 300, 30), "Sound director: Pau Bukowski", this.labelsStyle);
+		GUI.Label(new Rect(((Screen.width - 300) / 2), Screen.height - 70, 300, 30), "Art director: Marc Bauer", this.labelsStyle);
 	}
 }
